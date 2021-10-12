@@ -5,6 +5,8 @@ import com.example.carpark.dto.UserDTO;
 import com.example.carpark.dto.UserDetailsServiceModel;
 import com.example.carpark.entity.RoleEntity;
 import com.example.carpark.entity.UserEntity;
+import com.example.carpark.error.PasswordNotCorrectException;
+import com.example.carpark.error.UserNotFoundException;
 import com.example.carpark.model.CurrentUser;
 import com.example.carpark.repository.UserRepository;
 import com.example.carpark.service.BaseService;
@@ -16,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -26,6 +29,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -40,6 +44,29 @@ public class UserService implements BaseService<UserEntity> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
+    public boolean authenticate(String username, String password) {
+        Optional<UserEntity> user = userRepository.findByUsernameAndPassword(username, password);
+
+        if (user.isPresent()) {
+            return passwordEncoder.matches(password, user.get().getPassword());
+        }
+        return false;
+    }
+
+    public void loginU(String username) {
+        UserEntity user = userRepository.findByUsername(username).orElseThrow();
+        List<RoleEntity> roles = user.getRoles();
+
+
+        currentUser.setAnonymous(false);
+        currentUser.setName(username);
+        currentUser.setRoleList(roles);
+    }
+
+    public void logoutCurrentUser() {
+        currentUser.setAnonymous(true);
+    }
+
     @Override
     public Collection<UserEntity> getAll() {
         return this.userRepository.findAll();
@@ -49,6 +76,8 @@ public class UserService implements BaseService<UserEntity> {
     public UserEntity create(UserEntity model) {
         model.setCreated(Instant.now());
         model.setModified(Instant.now());
+        String encode = passwordEncoder.encode(model.getPassword());
+        model.setPassword(encode);
         return this.userRepository.save(model);
     }
 
@@ -90,39 +119,36 @@ public class UserService implements BaseService<UserEntity> {
 //        return false;
 //    }
 
-
-    public LoginDTO getUserByName(String username) throws NotFoundException {
+    public LoginDTO getUserByName(String username) {
         return this.userRepository.findByUsername(username)
                 .map(u -> this.modelMapper.map(u, LoginDTO.class))
-                .orElseThrow(() -> new NotFoundException("User with username {} not found"));
-
+                .orElseThrow(() -> new UserNotFoundException("User with username {} not found"));
     }
-
 
     public void login(String username) {
         currentUser.setAnonymous(false);
         currentUser.setName(username);
     }
-
-    public UserEntity getOrCreateUser(UserDTO userServiceModel) {
-        Objects.requireNonNull(userServiceModel.getPassword());
-        Optional<UserEntity> userEntityOpt = userRepository.findByUsername(userServiceModel.getUsername());
-        return userEntityOpt.orElseGet(() -> createUser(userServiceModel));
-    }
-
-    public void createAndLoginUser(UserDTO userServiceModel) {
-        UserEntity newUserEntity = createUser(userServiceModel);
-        UserDetails userDetails = userDetailsService.loadUserByUsername(newUserEntity.getUsername());
-        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, userServiceModel.getPassword(),
-                userDetails.getAuthorities());
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-    }
+//
+//    public UserEntity getOrCreateUser(UserDTO userServiceModel) {
+//        Objects.requireNonNull(userServiceModel.getPassword());
+//        Optional<UserEntity> userEntityOpt = userRepository.findByUsername(userServiceModel.getUsername());
+//        return userEntityOpt.orElseGet(() -> createUser(userServiceModel));
+//    }
+//
+//    public void createAndLoginUser(UserDTO userServiceModel) {
+//        UserEntity newUserEntity = createUser(userServiceModel);
+//        UserDetails userDetails = userDetailsService.loadUserByUsername(newUserEntity.getUsername());
+//        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, userServiceModel.getPassword(),
+//                userDetails.getAuthorities());
+//        SecurityContextHolder.getContext().setAuthentication(authentication);
+//    }
 
     public void loginUser(String username, String password) throws NotFoundException {
         UserDetailsServiceModel userDetailsServiceModel = this.findUserByUsername(username);
-//        if(!userDetailsServiceModel.getPassword().equals(passwordEncoder.encode(password))){
-//            throw new PasswordNotCorrectException();
-//        }
+        if (passwordEncoder.matches(userDetailsServiceModel.getPassword(), password)) {
+            throw new PasswordNotCorrectException();
+        }
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
         Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, password,
@@ -143,12 +169,10 @@ public class UserService implements BaseService<UserEntity> {
         throw new NotFoundException(username);
     }
 
-
     // userServiceModel = userDTO
     private UserEntity createUser(UserDTO userServiceModel) {
-        UserEntity userEntity = new UserEntity();
         LOGGER.info("Creating a new user with username [GDPR].");
-        userEntity = this.createUserWithRoles(userServiceModel, "USER");
+        UserEntity userEntity = this.createUserWithRoles(userServiceModel, "USER");
         return userRepository.save(userEntity);
     }
 

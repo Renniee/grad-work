@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import java.util.List;
 import java.util.Set;
 
@@ -28,12 +29,13 @@ public class UserEntity extends BaseEntity {
     @Column
     private int age;
 
+    @Email
     @Column
     private String email;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<Car> cars;
 
-    @ManyToMany(cascade=CascadeType.PERSIST)
+    @ManyToMany(cascade=CascadeType.PERSIST, fetch = FetchType.EAGER)
     private List<RoleEntity> roles;
 }

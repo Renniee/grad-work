@@ -64,7 +64,7 @@ public class UserController {
         UserEntity userEntity = this.modelMapper.map(registerDTO, UserEntity.class);
         RoleEntity role = new RoleEntity();
         try {
-            role = userRoleService.getByName("ADMIN");
+            role = userRoleService.getByName("USER");
         } catch (NotFoundException e) {
             e.printStackTrace();
         }
@@ -115,6 +115,18 @@ public class UserController {
 
         return "redirect:profile";
     }
+
+    @PostMapping("/users/login/v2" +
+            "")
+    public String confirmLogin(LoginDTO userLoginDTO) {
+        if (!userService.authenticate(userLoginDTO.getUsername(), userLoginDTO.getPassword())) {
+            return "redirect:/";
+        }
+
+        userService.login(userLoginDTO.getUsername());
+        return "redirect:/users/login";
+    }
+
 
 
     //TODO: can change httpSession into harder code
