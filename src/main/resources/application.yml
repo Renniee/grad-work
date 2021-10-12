@@ -26,4 +26,4 @@ spring:
 
       #Show SQL executed with parameter bindings
       #      logging.level.org.hibernate.SQL: DEBUG
-      logging.level.org.hibernate.type.descriptor: TRACE
+#      logging.level.org.hibernate.type.descriptor: TRACE

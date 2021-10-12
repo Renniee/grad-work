@@ -2,6 +2,7 @@ package com.example.carpark.web;
 
 
 import com.example.carpark.service.BaseService;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,7 @@ public abstract class BaseController<T, V extends BaseService<T>> {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<T> findById(@PathVariable String id){
+    public ResponseEntity<T> findById(@PathVariable String id) throws NotFoundException {
         return ResponseEntity.ok(this.service.findById(id));
     }
 
@@ -29,7 +30,7 @@ public abstract class BaseController<T, V extends BaseService<T>> {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<T> update(@PathVariable String id, @Valid @RequestBody T updated){
+    public ResponseEntity<T> update(@PathVariable String id, @Valid @RequestBody T updated) throws NotFoundException {
         return ResponseEntity.ok(this.service.update(id, updated));
     }
 

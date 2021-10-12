@@ -16,6 +16,6 @@ public class Car extends BaseEntity {
     private String registrationNumber;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
+    @JoinColumn
+    private UserEntity user;
 }

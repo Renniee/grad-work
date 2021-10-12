@@ -4,13 +4,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity
 @Table(name = "users")
 @Data
 @NoArgsConstructor
-public class User extends BaseEntity {
+public class UserEntity extends BaseEntity {
 
     @Column(name = "username", unique = true, nullable = false)
     private String username;
@@ -32,4 +33,7 @@ public class User extends BaseEntity {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<Car> cars;
+
+    @ManyToMany(cascade=CascadeType.PERSIST)
+    private List<RoleEntity> roles;
 }

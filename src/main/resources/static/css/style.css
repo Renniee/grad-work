@@ -68,11 +68,11 @@ a.login-button:hover{
 
 
 
-.forward-to-profile{
+.profile{
     font-family: 'Georgia', serif;
     color: #ffdbdb;
 }
-.forwardtoprofile-padding{
+.profile-padding{
     color: brown;
     top: 50%;
     left:50%;

@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
     <title>Car park</title>
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="/static/css/style.css"/>
@@ -13,23 +14,31 @@
           href="https://cdn-icons-png.flaticon.com/512/741/741407.png">
 </head>
 <body>
+
 <nav class="navbar navbar-upper bg-success">
     <div class="container-fluid">
         <div class="navbar-header">
             <a class="navbar-brand" href="#">Home</a>
         </div>
 
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="/users/profile" style="color: #ffdbdb">Profile</a></li>
+            <li><a href="/users/logout" style="color: #ffdbdb">Logout</a></li>
+        </ul>
     </div>
 </nav>
 <main>
-    <h1 class="logo-index" style="font-size:9vw;">Car park</h1>
-    <div class="buttons">
-        <a class = "login-button" href="/templates/login.html">Login</a>
-        <a class = "register-button" href="/templates/register.html">Register</a>
-    </div>
+    <div th:object="${gymId}">
 
+        <h1 class="text-upper" th:text="'Are you sure you want to subscribe?'">
+        </h1>
+        <form class="button" th:object="${subscriptionAddBindingModel}" th:action="@{/subscription/add/(gymId=${gymId})}" method="POST">
+
+
+            <input type="submit" name="submit" value="Subscribe">
+        </form>
+    </div>
 </main>
 
 </body>
 </html>
-

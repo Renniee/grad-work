@@ -11,5 +11,8 @@ import javax.persistence.Table;
 @Data
 @NoArgsConstructor
 public class Address extends BaseEntity {
-
+    private String city;
+    private String neighborhood;
+    private String street;
+    private int numberOfStreet;
 }
