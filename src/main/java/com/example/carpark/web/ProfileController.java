@@ -1,15 +1,18 @@
 package com.example.carpark.web;
 
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/error")
-public class ErrorController {
+@RequestMapping("/profile")
+@AllArgsConstructor
+public class ProfileController {
 
-    @GetMapping()
-    public String onError() {
-        return "error";
+    @GetMapping
+    public String showProfile() {
+
+        return "profile";
     }
 }

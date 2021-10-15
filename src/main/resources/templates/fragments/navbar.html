@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head></head>
+<body>
+
+<div th:fragment="navbar">
+  <nav class="navbar navbar-expand-lg bg-dark navbar-dark fixed-top">
+<!--    <a class="navbar-brand" href="/"><img alt="car picture" src="/img/car.png" class="logo"></a>-->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto col-12 justify-content-between">
+
+        <li class="nav-item" th:if="${@currentUser.isLoggedIn()}">
+          <a class="nav-link" href="/ticket/buy">Buy Ticket</a>
+        </li>
+        <li class="nav-item" th:if="${@currentUser.isLoggedIn()}">
+          <a class="nav-link" href="/cars/add">Add Car</a>
+        </li>
+
+        <li th:if="${@currentUser.anonymous}" class="nav-item">
+          <a class="nav-link" href="/users/register">Register</a>
+        </li>
+        <li th:if="${@currentUser.anonymous}" class="nav-item">
+          <a class="nav-link" href="/users/login">Login</a>
+        </li>
+        <li th:if="${@currentUser.isLoggedIn()}" class="nav-item">
+          <a class="nav-link" href="/profile">Profile</a>
+        </li>
+        <li th:if="${@currentUser.isLoggedIn}" class="nav-item">
+          <form method="POST"
+                th:action="@{/users/logout}">
+            <div class="form-inline my-2 my-lg-0 border px-3">
+              <input type="submit" class="nav-link" th:value="'Logout ' + ${@currentUser.name}"/>
+            </div>
+          </form>
+        </li>
+
+      </ul>
+    </div>
+  </nav>
+
+</div>
+
+</body>
+</html>

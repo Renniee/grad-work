@@ -2,6 +2,7 @@ package com.example.carpark.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -36,6 +37,11 @@ public class UserEntity extends BaseEntity {
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<Car> cars;
 
+    @ToString.Exclude
+    @OneToMany
+    private Set<Ticket> tickets;
+
+    @ToString.Exclude
     @ManyToMany(cascade=CascadeType.PERSIST, fetch = FetchType.EAGER)
     private List<RoleEntity> roles;
 }

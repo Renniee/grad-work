@@ -44,6 +44,6 @@ public class AddressService implements BaseService<Address> {
 
     @Override
     public Address getByName(String neighbourhood) {
-        return this.addressRepository.findByNeighborhood(neighbourhood);
+        return this.addressRepository.findByNeighbourhood(neighbourhood);
     }
 }

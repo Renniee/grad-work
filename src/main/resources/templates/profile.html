@@ -6,36 +6,25 @@
     <title>Car park</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/static/css/style.css"/>
+    <link rel="stylesheet" href="../css/reset-css.css"/>
+    <link rel="stylesheet" href="../css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/main.css"/>
     <link href="https://fonts.googleapis.com/css?family=Great+Vibes&display=swap" rel="stylesheet">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <script src="/js/jquery-3.5.1.slim.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+
+<!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
+<!--    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>-->
     <link rel="icon" type="image/png"
           href="https://cdn-icons-png.flaticon.com/512/741/741407.png">
 </head>
 <body>
 
-<nav class="navbar navbar-upper bg-success">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="home.html">Home</a>
-        </div>
+<div th:replace="fragments/navbar :: navbar">Navbar here</div>
 
-       <div>
-
-        <ul class="nav navbar-nav navbar-right" th:object="${username}">
-            <li><a th:href="@{profile.html(username=${username})}" style="color: #ffdbdb">Cars</a></li>
-<!--            <li><a href="/subscription/view-all-subscriptions" style="color: #ffdbdb">Subscriptions</a></li>-->
-            <li><a href="/logout" style="color: #ffdbdb">Logout</a></li>
-        </ul>
-    </div>
-    </div>
-</nav>
 <main>
-
-<h1 class="profile-padding" th:text="' Welcome to your profile, '+${username} + ' !'">
-</h1>
+    <h1 class="text-center text-pink mt-5">Welcome, <span th:text="${@currentUser.name}"></span>!</h1>
 
 </main>
 

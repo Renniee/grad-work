@@ -4,29 +4,28 @@
     <meta charset="UTF-8">
     <title>Car park</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/static/css/style.css"/>
-    <link href="https://fonts.googleapis.com/css?family=Great+Vibes&display=swap" rel="stylesheet">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../css/reset-css.css"/>
+    <link rel="stylesheet" href="../css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/main.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond&display=swap" rel="stylesheet">
+
+    <script src="/js/jquery-3.5.1.slim.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+<!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
+<!--    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>-->
     <link rel="icon" type="image/png"
           href="https://cdn-icons-png.flaticon.com/512/741/741407.png">
 </head>
 <body>
-<nav class="navbar navbar-upper bg-success">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="#">Home</a>
-        </div>
+<!--background-image: url("paper.gif");-->
+;
 
-    </div>
-</nav>
+<!--<div main="background-image: url('/img/car.png')"></div>-->
+<div class="backgrounded" th:replace="fragments/navbar :: navbar">Navbar here</div>
+
 <main>
-    <h1 class="logo-index" style="font-size:9vw;">Car park</h1>
-    <div class="buttons">
-        <a class = "login-button" href="/templates/login.html">Login</a>
-        <a class = "register-button" href="/templates/register.html">Register</a>
-    </div>
+    <h1 class="geramond" style="font-size:9vw;">Car park</h1>
+
 
 </main>
 

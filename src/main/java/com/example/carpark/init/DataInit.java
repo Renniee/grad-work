@@ -29,15 +29,34 @@ public class DataInit implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         initUsers();
+//
+//        UserEntity userEntity = userService.getByName("admin");
+//        initCar(userEntity, "CM2111AM");
+//        UserEntity userEntity2 = userService.getByName("AzImEcA");
+//        initCar(userEntity2, "CB11111");
+//        UserEntity userEntity3 = userService.getByName("Kolio");
+//        initCar(userEntity3, "PB1441");
 
-        UserEntity userEntity = userService.getByName("admin");
-        initCar(userEntity, "CM2111AM");
-        UserEntity userEntity2 = userService.getByName("AzImEcA");
-        initCar(userEntity2, "CB11111");
 
-        Address sofia = initAddress("Sofia", "Mladost", "neshot", 4);
-        //Address plovdiv = initAddress("Plovdiv");
+        Address sofia = initAddress("Sofia", "Mladost", "Alexander Malinov", 4);
+        Address sofia1 = initAddress("Sofia", "Obelya", "6-ta", 7);
+        Address sofia2 = initAddress("Sofia", "Vitosha", "Narcissus", 9);
+        Address plovdiv = initAddress("Plovdiv", "Kamenitsa", "Rodopi", 11);
+        Address plovdiv1 = initAddress("Plovdiv", "Kichuk Parij", "Peter Vaskov", 6);
+        Address plovdiv2 = initAddress("Plovdiv", "Smirnenski", "Peshtersko shose", 123);
+        Address burgas = initAddress("Burgas", "Zornitsa", "Boycho Branzov", 1);;
+        Address burgas1 = initAddress("Burgas", "Izgrev", "Petko Zadgorski", 12);;
+        Address burgas2 = initAddress("Burgas", "Slaveykov", "Trakia", 3);;
+
         ParkingSpace parkingSpace = initParkingSpace(sofia, BigDecimal.valueOf(2.50));
+        ParkingSpace parkingSpace1 = initParkingSpace(sofia1, BigDecimal.valueOf(2.50));
+        ParkingSpace parkingSpace2 = initParkingSpace(sofia2, BigDecimal.valueOf(2.50));
+        ParkingSpace parkingSpace11 = initParkingSpace(plovdiv, BigDecimal.valueOf(2.00));
+        ParkingSpace parkingSpace12 = initParkingSpace(plovdiv1, BigDecimal.valueOf(2.00));
+        ParkingSpace parkingSpace13 = initParkingSpace(plovdiv2, BigDecimal.valueOf(2.00));
+        ParkingSpace parkingSpace21 = initParkingSpace(burgas, BigDecimal.valueOf(1.50));
+        ParkingSpace parkingSpace22 = initParkingSpace(burgas1, BigDecimal.valueOf(1.50));
+        ParkingSpace parkingSpace23 = initParkingSpace(burgas2, BigDecimal.valueOf(1.50));
     }
 
     private ParkingSpace initParkingSpace(Address address, BigDecimal price) {
@@ -51,10 +70,10 @@ public class DataInit implements CommandLineRunner {
         return parkingSpace;
     }
 
-    private Address initAddress(String city, String neighborhood, String street, int numberOfStreet) {
+    private Address initAddress(String city, String neighbourhood, String street, int numberOfStreet) {
         Address address = new Address();
         address.setCity(city);
-        address.setNeighborhood(neighborhood);
+        address.setNeighbourhood(neighbourhood);
         address.setStreet(street);
         address.setNumberOfStreet(numberOfStreet);
 
@@ -79,28 +98,10 @@ public class DataInit implements CommandLineRunner {
 
     private void initUsers() {
         RoleEntity userRoleAdmin = new RoleEntity();
-        userRoleAdmin.setRole("ADMIN");
+        userRoleAdmin.setRole(RoleEnumType.ADMIN);
         RoleEntity userRoleUser = new RoleEntity();
-        userRoleUser.setRole("USER");
+        userRoleUser.setRole(RoleEnumType.USER);
 
         userRoleRepository.saveAll(List.of(userRoleAdmin, userRoleUser));
-
-        UserEntity admin = new UserEntity();
-        admin.setFirstName("admin");
-        admin.setLastName("adminov");
-        admin.setUsername("admin");
-        admin.setPassword(passwordEncoder.encode("123"));
-        admin.setRoles(List.of(userRoleAdmin, userRoleUser));
-        userService.create(admin);
-
-        UserEntity userEntity = new UserEntity();
-        userEntity.setFirstName("Azim");
-        userEntity.setLastName("Azimov");
-        userEntity.setUsername("AzImEcA");
-        userEntity.setPassword(passwordEncoder.encode("123"));
-        userEntity.setRoles(List.of(userRoleUser));
-        userService.create(userEntity);
-
-
     }
 }

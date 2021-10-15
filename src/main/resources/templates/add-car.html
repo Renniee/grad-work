@@ -3,39 +3,50 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Car park</title>
-    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/static/css/style.css"/>
+    <link rel="stylesheet" href="../css/reset-css.css"/>
+    <link rel="stylesheet" href="../css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/main.css"/>
     <link href="https://fonts.googleapis.com/css?family=Great+Vibes&display=swap" rel="stylesheet">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <script src="/js/jquery-3.5.1.slim.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+<!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
+<!--    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>-->
     <link rel="icon" type="image/png"
           href="https://cdn-icons-png.flaticon.com/512/741/741407.png">
 </head>
 <body>
 
-<nav class="navbar navbar-upper bg-success">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="#">Home</a>
-        </div>
+<div th:replace="fragments/navbar :: navbar">Navbar here</div>
 
-        <ul class="nav navbar-nav navbar-right">
-            <li><a href="/users/profile" style="color: #ffdbdb">Profile</a></li>
-            <li><a href="/users/logout" style="color: #ffdbdb">Logout</a></li>
-        </ul>
-    </div>
-</nav>
 <main>
-    <div th:object="${gymId}">
+    <div class="add-car">
+        <h1>Please add your car</h1>
+        <form th:object="${carDTO}" th:action="@{/cars/add}" method="POST">
+            <div>
+                <p>Brand</p>
+                <label>
+                    <input th:field="*{brand}" th:errorclass="bg-danger" type="text" name="brand" placeholder="Enter brand">
+                </label>
+                <small th:each = "e : ${#fields.errors('brand')}" th:text = "${e}" class="text-danger"></small>
+            </div>
+            <div>
+                <p>registrationNumber</p>
+                <label>
+                    <input th:field="*{registrationNumber}" th:errorclass="bg-danger" type="text" name="registrationNumber" placeholder="Enter reg">
+                </label>
+                <small  th:each = "e : ${#fields.errors('registrationNumber')}" th:text = "${e}" class="text-danger"></small>
+            </div>
+            <div>
+                <p>model</p>
+                <label>
+                    <input th:field="*{model}" th:errorclass="bg-danger" type="text" name="model" placeholder="Enter model">
+                </label>
+                <small  th:each = "e : ${#fields.errors('model')}" th:text = "${e}" class="text-danger"></small>
+            </div>
 
-        <h1 class="text-upper" th:text="'Are you sure you want to subscribe?'">
-        </h1>
-        <form class="button" th:object="${subscriptionAddBindingModel}" th:action="@{/subscription/add/(gymId=${gymId})}" method="POST">
-
-
-            <input type="submit" name="submit" value="Subscribe">
+            <input type="submit" name="submit" value="Add">
         </form>
     </div>
 </main>

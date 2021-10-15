@@ -2,6 +2,7 @@ package com.example.carpark.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
@@ -15,7 +16,15 @@ public class Car extends BaseEntity {
     @Column(name = "registration_number", unique = true, nullable = false)
     private String registrationNumber;
 
-    @ManyToOne
-    @JoinColumn
+    @Column(name = "brand")
+    private String brand;
+
+    @Column(name = "model")
+    private String model;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @ToString.Exclude
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private UserEntity user;
+
 }

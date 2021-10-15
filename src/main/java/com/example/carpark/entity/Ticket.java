@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -13,7 +14,8 @@ import javax.persistence.Table;
 @NoArgsConstructor
 public class Ticket extends BaseEntity {
 
-    @OneToOne
+
+    @ManyToOne
     private UserEntity userEntity;
 
     @OneToOne
@@ -21,4 +23,7 @@ public class Ticket extends BaseEntity {
 
     @OneToOne
     private Car car;
+
+    @OneToOne
+    private Code code;
 }

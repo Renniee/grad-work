@@ -3,7 +3,9 @@ package com.example.carpark.web;
 import com.example.carpark.dto.LoginDTO;
 import com.example.carpark.dto.RegisterDTO;
 import com.example.carpark.entity.RoleEntity;
+import com.example.carpark.entity.RoleEnumType;
 import com.example.carpark.entity.UserEntity;
+import com.example.carpark.model.CurrentUser;
 import com.example.carpark.service.impl.UserRoleService;
 import com.example.carpark.service.impl.UserService;
 import javassist.NotFoundException;
@@ -13,7 +15,10 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
@@ -30,6 +35,7 @@ public class UserController {
     private final UserService userService;
     private final UserRoleService userRoleService;
     private final ModelMapper modelMapper;
+    private final CurrentUser currentUser;
 
     @GetMapping("/register")
     public String register(Model model) {
@@ -43,7 +49,6 @@ public class UserController {
     public String registerConfirm(
             @Valid @ModelAttribute("registerDTO") RegisterDTO registerDTO,
             BindingResult bindingResult,
-            HttpSession httpSession,
             RedirectAttributes redirectAttributes,
             Model model
     ) {
@@ -64,16 +69,14 @@ public class UserController {
         UserEntity userEntity = this.modelMapper.map(registerDTO, UserEntity.class);
         RoleEntity role = new RoleEntity();
         try {
-            role = userRoleService.getByName("USER");
+            role = userRoleService.getByName(RoleEnumType.USER);
         } catch (NotFoundException e) {
             e.printStackTrace();
         }
         userEntity.setRoles(List.of(role));
         this.userService.create(userEntity);
 
-//        model.addAttribute("name", httpSession.getAttribute("application-name"));
-
-        return "home";
+        return "redirect:/";
     }
 
 
@@ -87,52 +90,34 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String loginConfirm(
-            @Valid @ModelAttribute("loginDTO") LoginDTO loginDTO,
-            BindingResult bindingResult,
-            RedirectAttributes redirectAttributes
-    ) throws NotFoundException {
+    public String login(@Valid @ModelAttribute LoginDTO loginDTO,
+                        BindingResult bindingResult,
+                        RedirectAttributes redirectAttributes) {
 
         if (bindingResult.hasErrors()) {
-
             redirectAttributes.addFlashAttribute("loginDTO", loginDTO);
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.loginDTO",
-                    bindingResult);
-            return "login";
-        }
-        LoginDTO user = this.userService.getUserByName(loginDTO.getUsername());
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.loginDTO", bindingResult);
 
-        if (user == null) {
-            redirectAttributes.addFlashAttribute("loginDTO", loginDTO);
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.loginDTO",
-                    bindingResult);
-            return "login";
+            return "redirect:login";
         }
 
-
-          this.userService.loginUser(user.getUsername(), loginDTO.getPassword());
-        userService.login(user.getUsername());
-
-        return "redirect:profile";
-    }
-
-    @PostMapping("/users/login/v2" +
-            "")
-    public String confirmLogin(LoginDTO userLoginDTO) {
-        if (!userService.authenticate(userLoginDTO.getUsername(), userLoginDTO.getPassword())) {
+        if (userService.isLoginValid(loginDTO.getUsername(),
+                loginDTO.getPassword())) {
+            // user successfully logged in
+            userService.loginUser(loginDTO.getUsername());
             return "redirect:/";
+        } else {
+            redirectAttributes.addFlashAttribute("loginDTO", loginDTO);
+            redirectAttributes.addFlashAttribute("notFound", true);
+
+            return "redirect:login";
         }
-
-        userService.login(userLoginDTO.getUsername());
-        return "redirect:/users/login";
     }
-
-
 
     //TODO: can change httpSession into harder code
     @GetMapping("/logout")
-    public String logout(HttpSession httpSession) {
-        httpSession.invalidate();
+    public String logout() {
+        currentUser.setAnonymous(true);
         return "redirect:/";
     }
 

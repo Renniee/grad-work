@@ -7,12 +7,10 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "addresses")
+@Table(name = "codes")
 @Data
 @NoArgsConstructor
-public class Address extends BaseEntity {
-    private String city;
-    private String neighbourhood;
-    private String street;
-    private int numberOfStreet;
+public class Code extends BaseEntity {
+
+    private int number;
 }

@@ -4,24 +4,20 @@
     <title>Car park</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/static/css/style.css"/>
-    <link href="https://fonts.googleapis.com/css?family=Great+Vibes&display=swap" rel="stylesheet">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../css/reset-css.css"/>
+    <link rel="stylesheet" href="../css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/main.css"/>
+<!--    <link href="https://fonts.googleapis.com/css?family=Great+Vibes&display=swap" rel="stylesheet">-->
+
+    <!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
+<!--    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>-->
     <link rel="icon" type="image/png"
           href="https://cdn-icons-png.flaticon.com/512/741/741407.png">
 </head>
 <body>
 
-<nav class="navbar navbar-upper bg-success">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="#">Home</a>
-        </div>
-    </div>
+<div th:replace="fragments/navbar :: navbar">Navbar here</div>
 
-</nav>
 <main>
     <div class="register-box">
         <h1>Register</h1>

@@ -1,12 +1,8 @@
 package com.example.carpark.service.impl;
 
-import com.example.carpark.dto.LoginDTO;
-import com.example.carpark.dto.UserDTO;
-import com.example.carpark.dto.UserDetailsServiceModel;
 import com.example.carpark.entity.RoleEntity;
+import com.example.carpark.entity.RoleEnumType;
 import com.example.carpark.entity.UserEntity;
-import com.example.carpark.error.PasswordNotCorrectException;
-import com.example.carpark.error.UserNotFoundException;
 import com.example.carpark.model.CurrentUser;
 import com.example.carpark.repository.UserRepository;
 import com.example.carpark.service.BaseService;
@@ -15,11 +11,6 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +18,6 @@ import javax.transaction.Transactional;
 import java.time.Instant;
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -40,32 +30,8 @@ public class UserService implements BaseService<UserEntity> {
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
     private final CurrentUser currentUser;
-    private final UserDetailsServiceImpl userDetailsService;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
-
-    public boolean authenticate(String username, String password) {
-        Optional<UserEntity> user = userRepository.findByUsernameAndPassword(username, password);
-
-        if (user.isPresent()) {
-            return passwordEncoder.matches(password, user.get().getPassword());
-        }
-        return false;
-    }
-
-    public void loginU(String username) {
-        UserEntity user = userRepository.findByUsername(username).orElseThrow();
-        List<RoleEntity> roles = user.getRoles();
-
-
-        currentUser.setAnonymous(false);
-        currentUser.setName(username);
-        currentUser.setRoleList(roles);
-    }
-
-    public void logoutCurrentUser() {
-        currentUser.setAnonymous(true);
-    }
 
     @Override
     public Collection<UserEntity> getAll() {
@@ -108,84 +74,34 @@ public class UserService implements BaseService<UserEntity> {
         return userEntity != null;
     }
 
-//    public boolean loginUser(String username, String password) {
-//
-//        Optional<User> user = userRepository.findByUsernameAndPassword(username, password);
-//
-//        if (user.isPresent()) {
-//           return true;
-//           // return passwordEncoder.matches(password, user.get().getPassword());
-//        }
-//        return false;
-//    }
+    public boolean isLoginValid(String userName, String password) {
+        Optional<UserEntity> userEntity = userRepository.findByUsername(userName);
 
-    public LoginDTO getUserByName(String username) {
-        return this.userRepository.findByUsername(username)
-                .map(u -> this.modelMapper.map(u, LoginDTO.class))
-                .orElseThrow(() -> new UserNotFoundException("User with username {} not found"));
+        return userEntity.
+                map(UserEntity::getPassword).
+                filter(pwd -> passwordEncoder.matches(password, pwd)).
+                isPresent();
     }
 
-    public void login(String username) {
+    public void loginUser(String userName) {
+
+        UserEntity userEntity = userRepository.
+                findByUsername(userName).
+                orElseThrow(() -> new IllegalArgumentException("User with name " + userName + " not found!"));
+
+        List<RoleEnumType> userRoles = userEntity.
+                getRoles().
+                stream().
+                map(RoleEntity::getRole).
+                collect(Collectors.toList());
+
+        currentUser.setName(userEntity.getUsername());
+        currentUser.addUserRoles(userRoles);
         currentUser.setAnonymous(false);
-        currentUser.setName(username);
-    }
-//
-//    public UserEntity getOrCreateUser(UserDTO userServiceModel) {
-//        Objects.requireNonNull(userServiceModel.getPassword());
-//        Optional<UserEntity> userEntityOpt = userRepository.findByUsername(userServiceModel.getUsername());
-//        return userEntityOpt.orElseGet(() -> createUser(userServiceModel));
-//    }
-//
-//    public void createAndLoginUser(UserDTO userServiceModel) {
-//        UserEntity newUserEntity = createUser(userServiceModel);
-//        UserDetails userDetails = userDetailsService.loadUserByUsername(newUserEntity.getUsername());
-//        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, userServiceModel.getPassword(),
-//                userDetails.getAuthorities());
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
-//    }
-
-    public void loginUser(String username, String password) throws NotFoundException {
-        UserDetailsServiceModel userDetailsServiceModel = this.findUserByUsername(username);
-        if (passwordEncoder.matches(userDetailsServiceModel.getPassword(), password)) {
-            throw new PasswordNotCorrectException();
-        }
-        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-
-        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, password,
-                userDetails.getAuthorities());
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
     }
 
-
-    public UserDetailsServiceModel findUserByUsername(String username) throws NotFoundException {
-        UserEntity userEntity = this.userRepository.findByUsername(username).orElse(null);
-        if (userEntity != null) {
-
-            UserDetailsServiceModel userDetailsServiceModel = this.modelMapper.map(userEntity, UserDetailsServiceModel.class);
-            userDetailsServiceModel.setUsername(userEntity.getUsername());
-            return userDetailsServiceModel;
-        }
-        throw new NotFoundException(username);
-    }
-
-    // userServiceModel = userDTO
-    private UserEntity createUser(UserDTO userServiceModel) {
-        LOGGER.info("Creating a new user with username [GDPR].");
-        UserEntity userEntity = this.createUserWithRoles(userServiceModel, "USER");
-        return userRepository.save(userEntity);
-    }
-
-    private UserEntity createUserWithRoles(UserDTO userServiceModel, String role) {
-        UserEntity userEntity = this.modelMapper.map(userServiceModel, UserEntity.class);
-
-        if (userServiceModel.getPassword() != null) {
-            userEntity.setPassword(passwordEncoder.encode(userServiceModel.getPassword()));
-        }
-        RoleEntity userRole = new RoleEntity();
-        userRole.setRole(role);
-        userEntity.setRoles(List.of(userRole));
-        return userEntity;
+    public void saveUser(UserEntity user) {
+        userRepository.save(user);
     }
 }
 

@@ -1,6 +1,7 @@
 package com.example.carpark.service.impl;
 
 import com.example.carpark.entity.RoleEntity;
+import com.example.carpark.entity.RoleEnumType;
 import com.example.carpark.repository.UserRoleRepository;
 import com.example.carpark.service.BaseService;
 import javassist.NotFoundException;
@@ -38,13 +39,17 @@ public class UserRoleService implements BaseService<RoleEntity> {
     }
 
     @Override
-    public RoleEntity update(String id, RoleEntity viewDto) throws NotFoundException {
+    public RoleEntity update(String id, RoleEntity viewDto){
         return null;
     }
 
     @Override
-    public RoleEntity getByName(String name) throws NotFoundException {
-        return userRoleRepository.findByRole(name)
-                .orElseThrow(() -> new NotFoundException("Role with name {} do not exist!"));
+    public RoleEntity getByName(String name) {
+        return null;
+    }
+
+    public RoleEntity getByName(RoleEnumType roleType) throws NotFoundException {
+        return userRoleRepository.findByRole(roleType)
+                .orElseThrow(() -> new NotFoundException("Role with roleType {} do not exist!"));
     }
 }

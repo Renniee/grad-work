@@ -15,5 +15,5 @@ public class RoleEntity {
     private Long id;
 
     @Column(name = "role", nullable = false)
-    private String role;
+    private RoleEnumType role;
 }

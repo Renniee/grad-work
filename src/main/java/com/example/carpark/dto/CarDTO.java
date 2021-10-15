@@ -1,13 +1,12 @@
 package com.example.carpark.dto;
 
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Getter
+@Data
 @NoArgsConstructor
 public class CarDTO {
-    private int number;
     private String brand;
+    private String registrationNumber;
     private String model;
-    private String colour;
 }
