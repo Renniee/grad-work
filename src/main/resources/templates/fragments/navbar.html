@@ -15,11 +15,19 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto col-12 justify-content-between">
 
-        <li class="nav-item" th:if="${@currentUser.isLoggedIn()}">
-          <a class="nav-link" href="/ticket/buy">Buy Ticket</a>
         </li>
         <li class="nav-item" th:if="${@currentUser.isLoggedIn()}">
-          <a class="nav-link" href="/cars/add">Add Car</a>
+          <a class="nav-link" href="/cars/add">Add new car</a>
+        </li>
+<!--        th:if="${@currentUser.isLoggedIn()}-->
+        <li class="nav-item" th:if="${@currentUser.isLoggedIn()}">
+          <a class="nav-link" href="/parking/spot">Find parking spot</a>
+        </li>
+        <li class="nav-item" th:if="${@currentUser.isLoggedIn()}">
+          <a class="nav-link" href="/ticket/get">Get ticket</a>
+        </li>
+        <li th:if="${@currentUser.isLoggedIn()}" class="nav-item">
+          <a class="nav-link" href="/profile">Profile</a>
         </li>
 
         <li th:if="${@currentUser.anonymous}" class="nav-item">
@@ -28,9 +36,7 @@
         <li th:if="${@currentUser.anonymous}" class="nav-item">
           <a class="nav-link" href="/users/login">Login</a>
         </li>
-        <li th:if="${@currentUser.isLoggedIn()}" class="nav-item">
-          <a class="nav-link" href="/profile">Profile</a>
-        </li>
+
         <li th:if="${@currentUser.isLoggedIn}" class="nav-item">
           <form method="POST"
                 th:action="@{/users/logout}">

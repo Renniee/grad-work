@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="../css/reset-css.css"/>
     <link rel="stylesheet" href="../css/bootstrap.min.css"/>
-    <link rel="stylesheet" type="text/css" href="../css/main.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/login.css"/>
     <link href="https://fonts.googleapis.com/css2?family=EB+Garamond&display=swap" rel="stylesheet">
 
     <!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
@@ -22,7 +22,7 @@
 
 <main>
     <div class="login-box">
-        <h1 class="geramond">Login</h1>
+        <h1 style="font-size:3vw;">Login</h1>
         <form th:object="${loginDTO}" th:action="@{/users/login}" method="POST">
 
             <div>

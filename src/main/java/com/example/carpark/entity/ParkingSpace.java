@@ -15,9 +15,9 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class ParkingSpace extends BaseEntity {
 
-
     @OneToOne
     private Address address;
+
     private BigDecimal price;
 
     @OneToOne

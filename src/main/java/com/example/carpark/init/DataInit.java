@@ -28,6 +28,9 @@ public class DataInit implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        if (userRoleRepository.count() != 0) {
+            return;
+        }
         initUsers();
 //
 //        UserEntity userEntity = userService.getByName("admin");
@@ -103,5 +106,14 @@ public class DataInit implements CommandLineRunner {
         userRoleUser.setRole(RoleEnumType.USER);
 
         userRoleRepository.saveAll(List.of(userRoleAdmin, userRoleUser));
+
+        UserEntity userEntity = new UserEntity();
+
+        userEntity.setUsername("123");
+        userEntity.setRoles(List.of(userRoleAdmin));
+        userEntity.setPassword("123");
+        userEntity.setEmail("123");
+
+        userService.create(userEntity);
     }
 }

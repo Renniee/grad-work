@@ -59,8 +59,9 @@ public class UserService implements BaseService<UserEntity> {
     }
 
     @Override
-    public UserEntity update(String id, UserEntity viewDto) {
-        return null;
+    public UserEntity update(String id, UserEntity user) {
+        user.setModified(Instant.now());
+        return userRepository.save(user);
     }
 
     @Override
@@ -98,10 +99,6 @@ public class UserService implements BaseService<UserEntity> {
         currentUser.setName(userEntity.getUsername());
         currentUser.addUserRoles(userRoles);
         currentUser.setAnonymous(false);
-    }
-
-    public void saveUser(UserEntity user) {
-        userRepository.save(user);
     }
 }
 

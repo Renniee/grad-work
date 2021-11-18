@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="../css/reset-css.css"/>
     <link rel="stylesheet" href="../css/bootstrap.min.css"/>
-    <link rel="stylesheet" type="text/css" href="../css/main.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/add-car.css"/>
     <link href="https://fonts.googleapis.com/css?family=Great+Vibes&display=swap" rel="stylesheet">
 
     <script src="/js/jquery-3.5.1.slim.min.js"></script>
@@ -21,28 +21,31 @@
 <div th:replace="fragments/navbar :: navbar">Navbar here</div>
 
 <main>
-    <div class="add-car">
-        <h1>Please add your car</h1>
+    <div class="centered">
+        <h2 class="heading">Please add your car:</h2>
         <form th:object="${carDTO}" th:action="@{/cars/add}" method="POST">
+
             <div>
                 <p>Brand</p>
-                <label>
+
                     <input th:field="*{brand}" th:errorclass="bg-danger" type="text" name="brand" placeholder="Enter brand">
-                </label>
+
                 <small th:each = "e : ${#fields.errors('brand')}" th:text = "${e}" class="text-danger"></small>
             </div>
+
             <div>
                 <p>registrationNumber</p>
-                <label>
+
                     <input th:field="*{registrationNumber}" th:errorclass="bg-danger" type="text" name="registrationNumber" placeholder="Enter reg">
-                </label>
+
                 <small  th:each = "e : ${#fields.errors('registrationNumber')}" th:text = "${e}" class="text-danger"></small>
             </div>
+
             <div>
                 <p>model</p>
-                <label>
+
                     <input th:field="*{model}" th:errorclass="bg-danger" type="text" name="model" placeholder="Enter model">
-                </label>
+
                 <small  th:each = "e : ${#fields.errors('model')}" th:text = "${e}" class="text-danger"></small>
             </div>
 

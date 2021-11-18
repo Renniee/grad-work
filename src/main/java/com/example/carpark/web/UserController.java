@@ -121,6 +121,7 @@ public class UserController {
         return "redirect:/";
     }
 
+
     @GetMapping("/profile")
     String getFullStatistics(Model model, @AuthenticationPrincipal Principal principal) throws NotFoundException {
         model.addAttribute("username", principal.getName());

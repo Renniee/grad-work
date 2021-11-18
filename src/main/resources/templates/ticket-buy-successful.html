@@ -21,27 +21,19 @@
 <div th:replace="fragments/navbar :: navbar">Navbar here</div>
 
 <main>
-    <div class="login-box">
-        <h1>Login</h1>
-        <form th:action="@{/users/login}" method="POST" th:object="${loginDTO}">
-
-            <div>
-                <p>Username</p>
-                <label>
-                    <input th:field="*{username}" th:errorclass="bg-danger" type="text" name="username" placeholder="Enter username">
-                </label>
-                <small th:each = "e : ${#fields.errors('username')}" th:text = "${e}" class="text-danger"></small>
-            </div>
-            <div>
-                <p>Password</p>
-                <label>
-                    <input th:field="*{password}" th:errorclass="bg-danger" type="password" name="password" placeholder="Enter password">
-                </label>
-                <small  th:each = "e : ${#fields.errors('password')}" th:text = "${e}" class="text-danger"></small>
-            </div>
-
-            <input type="submit" name="submit" value="Login">
-        </form>
+    <h2 class="heading">Successfully bought ticket!</h2></br>
+<!--    <dialog open>-->
+<!--        <p>Greetings, one and all!</p>-->
+<!--    </dialog>-->
+    <div>
+        <dialog open>
+        <span th:object="${addressViewDTO}"></span>
+        <span th:text="'Your ticket number is: ' + ${addressViewDTO.ticketNumber}"></span> </br>
+        <span th:text="'City: ' + ${addressViewDTO.getCity()}"></span> </br>
+        <span th:text="'Neighbourhood: ' + ${addressViewDTO.neighbourhood}"></span> </br>
+        <span th:text="'Street: ' + ${addressViewDTO.street}"></span> </br>
+        <span th:text="'Number of street: ' + ${addressViewDTO.numberOfStreet}"></span> </br>
+        </dialog>
     </div>
 </main>
 

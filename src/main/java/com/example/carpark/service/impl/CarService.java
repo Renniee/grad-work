@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.Instant;
 import java.util.Collection;
-import java.util.Set;
 
 @Service
 @AllArgsConstructor
@@ -34,18 +33,24 @@ public class CarService implements BaseService<Car> {
     public Car create(Car car) {
         car.setCreated(Instant.now());
         car.setModified(Instant.now());
+
         return this.carRepository.saveAndFlush(car);
     }
 
-    public Car create(CarDTO seedDto) throws NotFoundException {
+    @Transactional
+    public Car addCarToUser(CarDTO seedDto) throws NotFoundException {
         Car car = this.modelMapper.map(seedDto, Car.class);
         car.setCreated(Instant.now());
         car.setModified(Instant.now());
-        car.setId("");
-        String currentUserName = currentUser.getName();
-        UserEntity user = userService.getByName(currentUserName);
-//        car.setUser(user);
-        return this.carRepository.saveAndFlush(car);
+        UserEntity user = null;
+        try {
+            user = userService.getByName(currentUser.getName());
+        } catch (NotFoundException e) {
+            e.printStackTrace();
+        }
+        car.setUser(user);
+
+        return this.carRepository.save(car);
     }
 
     @Override
@@ -67,17 +72,5 @@ public class CarService implements BaseService<Car> {
     @Override
     public Car getByName(String registrationNumber) {
         return this.carRepository.findByRegistrationNumber(registrationNumber);
-    }
-
-    @Transactional
-    public void addCarToUser(String brand) throws NotFoundException {
-        Car car = getByName(brand);
-        UserEntity user = userService.getByName(currentUser.getName());
-
-        Set<Car> cars = user.getCars();
-
-        cars.add(car);
-
-//        userService.saveUser(user);
     }
 }

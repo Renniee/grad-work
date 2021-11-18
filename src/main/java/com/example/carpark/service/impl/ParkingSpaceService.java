@@ -1,14 +1,18 @@
 package com.example.carpark.service.impl;
 
+import com.example.carpark.dto.ParkingSpaceDTO;
 import com.example.carpark.entity.ParkingSpace;
 import com.example.carpark.repository.ParkingSpaceRepository;
 import com.example.carpark.service.BaseService;
 import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -16,10 +20,18 @@ import java.util.Collection;
 public class ParkingSpaceService implements BaseService<ParkingSpace> {
 
     private final ParkingSpaceRepository parkingSpaceRepository;
+    private final ModelMapper modelMapper;
 
     @Override
     public Collection<ParkingSpace> getAll() {
-        return null;
+        return this.parkingSpaceRepository.findAll();
+    }
+
+    public List<ParkingSpaceDTO> getAllDTOs() {
+        return this.parkingSpaceRepository.findAll()
+                .stream()
+                .map(p -> modelMapper.map(p, ParkingSpaceDTO.class))
+                .collect(Collectors.toList());
     }
 
     @Override
