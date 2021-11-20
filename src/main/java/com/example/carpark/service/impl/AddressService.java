@@ -14,28 +14,36 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 @Transactional
-public class AddressService implements BaseService<Address> {
+public class AddressService implements BaseService<AddressDTO> {
     private final AddressRepository addressRepository;
     private final ModelMapper modelMapper;
 
     @Override
-    public Collection<Address> getAll() {
-        return this.addressRepository.findAll();
+    public Collection<AddressDTO> getAll() {
+        return this.addressRepository.findAll()
+                .stream()
+                .map(a -> modelMapper.map(a, AddressDTO.class))
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Address create(Address seedDto) {
-        return this.addressRepository.save(seedDto);
+    public AddressDTO create(AddressDTO seedDto) {
+        Address address = modelMapper.map(seedDto, Address.class);
+        addressRepository.save(address);
+        AddressDTO addressDTO = modelMapper.map(address, AddressDTO.class);
+        return addressDTO;
     }
 
     @Override
-    public Address findById(String id) throws NotFoundException {
+    public AddressDTO findById(String id) throws NotFoundException {
         return this.addressRepository.findById(id)
+                .map(a -> modelMapper.map(a, AddressDTO.class))
                 .orElseThrow(() -> new NotFoundException("Address not found!"));
     }
 
@@ -45,20 +53,20 @@ public class AddressService implements BaseService<Address> {
     }
 
     @Override
-    public Address update(String id, Address viewDto) {
+    public AddressDTO update(String id, AddressDTO viewDto) {
         return null;
     }
 
     @Override
-    public Address getByName(String neighbourhood) {
-        return this.addressRepository.findByNeighbourhood(neighbourhood);
+    public AddressDTO getByName(String neighbourhood) {
+        Address addressByNeighbourhood = addressRepository.findByNeighbourhood(neighbourhood);
+        return modelMapper.map(addressByNeighbourhood, AddressDTO.class);
     }
 
-    public List<AddressDTO> getAllDTOs() {
-
+    public List<String> getAllDTOs() {
         return this.addressRepository.findAll()
                 .stream()
-                .map(p -> modelMapper.map(p, AddressDTO.class))
+                .map(Address::getCity)
                 .collect(Collectors.toList());
 
     }
@@ -76,5 +84,9 @@ public class AddressService implements BaseService<Address> {
         return this.addressRepository.findById(id)
                 .map(a -> modelMapper.map(a, AddressViewDTO.class))
                 .orElseThrow(() -> new NotFoundException("Address not found!"));
+    }
+
+    public void createAddress(Address address) {
+        addressRepository.save(address);
     }
 }

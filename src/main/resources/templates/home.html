@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Car park</title>
@@ -11,8 +12,8 @@
 
     <script src="/js/jquery-3.5.1.slim.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
-<!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
-<!--    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>-->
+    <!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
+    <!--    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>-->
     <link rel="icon" type="image/png"
           href="https://cdn-icons-png.flaticon.com/512/741/741407.png">
 </head>
@@ -21,9 +22,20 @@
 <div th:replace="fragments/navbar :: navbar">Navbar here</div>
 
 <main>
-    <h1 style="font-size:9vw;">Car park</h1>
+    <div class="container-fluid">
+        <h1 class="text-upper">
 
 
+            <span sec:authorize="isAuthenticated()">Welcome to Car park, </span>
+            <span sec:authorize="isAuthenticated()"
+                    sec:authentication="name">
+        Name of the logged in user
+    </span>
+            <span sec:authorize="isAnonymous()">
+        Car park
+    </span>
+        </h1>
+    </div>
 </main>
 
 </body>

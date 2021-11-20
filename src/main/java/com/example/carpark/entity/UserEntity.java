@@ -34,7 +34,7 @@ public class UserEntity extends BaseEntity {
     @Column
     private String email;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Car> cars;
 
     @ToString.Exclude
@@ -42,6 +42,6 @@ public class UserEntity extends BaseEntity {
     private Set<Ticket> tickets;
 
     @ToString.Exclude
-    @ManyToMany(cascade=CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
     private List<RoleEntity> roles;
 }

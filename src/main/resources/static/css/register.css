@@ -9,8 +9,10 @@ body {
     /*#1d112d*/
 }
 
-.login-box {
-    color: #1d112d; /*  */
+.register-box {
+    width: 320px;
+    height: 700px;
+    color: #1d112d;
     top: 50%;
     left: 50%;
     position: absolute;
@@ -19,21 +21,20 @@ body {
     padding: 70px 30px;
 }
 
-.login-box p { /* color of text */
+.register-box p {
     margin: 0;
     padding: 0;
     font-weight: bold;
     color: #1d112d;
 }
 
-.login-box input {
+.register-box input {
     width: 100%;
     margin-bottom: 20px;
-    color: white;
-    background-color: #ffdbdb
 }
-.login-box input[type="text"], input[type="username"] {
-    border: white;
+
+.register-box input[type="text"], input[type="password"], input[type="email"], input[type="number"] {
+    border: none;
     border-bottom: 1px solid #fff;
     outline: none;
     height: 40px;
@@ -42,17 +43,7 @@ body {
     background-color: floralwhite;
 }
 
-.login-box input[type="text"], input[type="password"] {
-    border: #AC3030;
-    border-bottom: 1px solid #fff;
-    outline: none;
-    height: 40px;
-    color: black;
-    font-size: 16px;
-    background-color: floralwhite;
-}
-
-.login-box input[type="submit"] {
+.register-box input[type="submit"] {
     border: none;
     outline: none;
     height: 40px;
@@ -62,22 +53,8 @@ body {
     border-radius: 20px;
 }
 
-.login-box input[type="submit"]:hover {
+.register-box input[type="submit"]:hover {
     cursor: pointer;
     background: dimgray;
     color: floralwhite;
-}
-
-
-.heading {
-    position: static;
-    left: 100px;
-    top: 300px;
-    margin: 0; /* heading style */
-    padding: 150px;
-    text-align: center;
-    font-size: 60px;
-    /*color: #1D112D;*/
-    color: #1b1e21;
-    font-weight: normal;
 }

@@ -6,6 +6,7 @@ import com.example.carpark.repository.UserRoleRepository;
 import com.example.carpark.service.BaseService;
 import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -16,6 +17,7 @@ import java.util.Collection;
 @AllArgsConstructor
 public class UserRoleService implements BaseService<RoleEntity> {
     private final UserRoleRepository userRoleRepository;
+    private final ModelMapper modelMapper;
 
     @Override
     public Collection<RoleEntity> getAll() {

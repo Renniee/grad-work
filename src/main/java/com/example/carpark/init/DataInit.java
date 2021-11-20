@@ -7,6 +7,7 @@ import com.example.carpark.service.impl.CarService;
 import com.example.carpark.service.impl.ParkingSpaceService;
 import com.example.carpark.service.impl.UserService;
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -24,6 +25,7 @@ public class DataInit implements CommandLineRunner {
     private final AddressService addressService;
     private final UserRoleRepository userRoleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final ModelMapper modelMapper;
     private final ParkingSpaceService parkingSpaceService;
 
     @Override
@@ -81,7 +83,7 @@ public class DataInit implements CommandLineRunner {
         address.setNumberOfStreet(numberOfStreet);
 
         setCurrentTimestamps(address);
-        addressService.create(address);
+        addressService.createAddress(address);
 
         return address;
     }
@@ -109,11 +111,11 @@ public class DataInit implements CommandLineRunner {
 
         UserEntity userEntity = new UserEntity();
 
-        userEntity.setUsername("123");
+        userEntity.setUsername("admin");
         userEntity.setRoles(List.of(userRoleAdmin));
-        userEntity.setPassword("123");
-        userEntity.setEmail("123");
+        userEntity.setPassword(passwordEncoder.encode("123"));
+        userEntity.setEmail("admin@admin.ad");
 
-        userService.create(userEntity);
+        userService.createV1(userEntity);
     }
 }
