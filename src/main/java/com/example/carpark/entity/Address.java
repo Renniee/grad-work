@@ -14,5 +14,6 @@ public class Address extends BaseEntity {
     private String city;
     private String neighbourhood;
     private String street;
+    private boolean isOccupied;
     private int numberOfStreet;
 }

@@ -11,6 +11,5 @@ import javax.persistence.Table;
 @Data
 @NoArgsConstructor
 public class Code extends BaseEntity {
-
     private int number;
 }

@@ -1,16 +1,9 @@
 package com.example.carpark.web;
 
-import com.example.carpark.dto.LoginDTO;
 import com.example.carpark.dto.RegisterDTO;
-import com.example.carpark.entity.RoleEntity;
-import com.example.carpark.entity.RoleEnumType;
-import com.example.carpark.entity.UserEntity;
-import com.example.carpark.model.CurrentUser;
-import com.example.carpark.service.impl.UserRoleService;
 import com.example.carpark.service.impl.UserService;
 import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Controller;
@@ -24,7 +17,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.security.Principal;
-import java.util.List;
 
 
 @Controller

@@ -1,10 +1,8 @@
 package com.example.carpark.service.impl;
 
 import com.example.carpark.dto.CarDTO;
-import com.example.carpark.dto.UserDTO;
 import com.example.carpark.entity.Car;
 import com.example.carpark.entity.UserEntity;
-import com.example.carpark.model.CurrentUser;
 import com.example.carpark.repository.CarRepository;
 import com.example.carpark.service.BaseService;
 import javassist.NotFoundException;
@@ -26,7 +24,6 @@ public class CarService implements BaseService<CarDTO> {
     private final CarRepository carRepository;
     private final UserService userService;
     private final ModelMapper modelMapper;
-    private final CurrentUser currentUser;
 
     @Override
     public Collection<CarDTO> getAll() {

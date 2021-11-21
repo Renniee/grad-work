@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 
     <title>Car park</title>
@@ -24,7 +24,7 @@
 <div th:replace="fragments/navbar :: navbar">Navbar here</div>
 
 <main>
-    <h1 class="text-center text-pink mt-5">Welcome, <span th:text="${@currentUser.name}"></span>!</h1>
+    <h1 class="text-center text-pink mt-5">Welcome to your profile, <th:block sec:authentication="name"></th:block>!</h1>
 
 </main>
 

@@ -1,6 +1,6 @@
 package com.example.carpark.web;
 
-import com.example.carpark.dto.AddressViewDTO;
+import com.example.carpark.dto.AddressDTO;
 import com.example.carpark.entity.Address;
 import com.example.carpark.service.impl.AddressService;
 import com.example.carpark.service.impl.ParkingSpaceService;
@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
-import java.util.Set;
 
 @Controller
 @RequestMapping("/parking/spot")
@@ -33,7 +32,8 @@ public class ParkingSpaceController {
 
     @GetMapping("/{townName}")
     public String showFreePlacesForTown(@PathVariable String townName, Model model) {
-        List<Address> addresses = addressService.findAllFreeSpotsFor(townName);
+        List<AddressDTO> addresses = addressService.findAllFreeSpotsFor(townName);
+//        ParkingSpaceDTO parkingSpaces = parkingSpaceService.getAllDTOs();
 
         model.addAttribute("addresses", addresses);
         model.addAttribute("townName", townName);

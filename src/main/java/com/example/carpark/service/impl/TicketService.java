@@ -1,6 +1,5 @@
 package com.example.carpark.service.impl;
 
-import com.example.carpark.dto.AddressDTO;
 import com.example.carpark.dto.TicketDTO;
 import com.example.carpark.entity.Ticket;
 import com.example.carpark.repository.TicketRepository;

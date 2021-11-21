@@ -22,17 +22,13 @@
 
 <main>
     <h2 class="heading">Successfully bought ticket!</h2></br>
-<!--    <dialog open>-->
-<!--        <p>Greetings, one and all!</p>-->
-<!--    </dialog>-->
     <div>
         <dialog open>
-        <span th:object="${addressViewDTO}"></span>
-        <span th:text="'Your ticket number is: ' + ${addressViewDTO.ticketNumber}"></span> </br>
-        <span th:text="'City: ' + ${addressViewDTO.getCity()}"></span> </br>
-        <span th:text="'Neighbourhood: ' + ${addressViewDTO.neighbourhood}"></span> </br>
-        <span th:text="'Street: ' + ${addressViewDTO.street}"></span> </br>
-        <span th:text="'Number of street: ' + ${addressViewDTO.numberOfStreet}"></span> </br>
+        <span th:text="'Your ticket number is: ' + ${address.ticket}"></span> </br>
+        <span th:text="'City: ' + ${address.getCity()}"></span> </br>
+        <span th:text="'Neighbourhood: ' + ${address.neighbourhood}"></span> </br>
+        <span th:text="'Street: ' + ${address.street}"></span> </br>
+        <span th:text="'Number of street: ' + ${address.numberOfStreet}"></span> </br>
         </dialog>
     </div>
 </main>

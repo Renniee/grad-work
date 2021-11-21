@@ -1,8 +1,6 @@
 package com.example.carpark.service.impl;
 
 import com.example.carpark.dto.AddressDTO;
-import com.example.carpark.dto.AddressViewDTO;
-import com.example.carpark.dto.ParkingSpaceDTO;
 import com.example.carpark.entity.Address;
 import com.example.carpark.repository.AddressRepository;
 import com.example.carpark.service.BaseService;
@@ -14,7 +12,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -54,7 +52,13 @@ public class AddressService implements BaseService<AddressDTO> {
 
     @Override
     public AddressDTO update(String id, AddressDTO viewDto) {
-        return null;
+        Address address = addressRepository.findById(id).get();
+
+        address.setOccupied(viewDto.isOccupied());
+
+        addressRepository.saveAndFlush(address);
+
+        return viewDto;
     }
 
     @Override
@@ -71,18 +75,26 @@ public class AddressService implements BaseService<AddressDTO> {
 
     }
 
-    public List<Address> findAllFreeSpotsFor(String city) {
+    public List<AddressDTO> findAllFreeSpotsFor(String city) {
         return addressRepository.findAll()
                 .stream()
                 .filter(address -> address.getCity().equalsIgnoreCase(city))
-//                .map(a -> modelMapper.map(a, AddressDTO.class))
+                .map(a -> modelMapper.map(a, AddressDTO.class))
                 .collect(Collectors.toList());
     }
 
 
-    public AddressViewDTO findByAddressId(String id) throws NotFoundException {
-        return this.addressRepository.findById(id)
-                .map(a -> modelMapper.map(a, AddressViewDTO.class))
+    public AddressDTO findByAddressId(String id) throws NotFoundException {
+        Optional<Address> byId = this.addressRepository.findById(id);
+        return byId
+                .map(a -> modelMapper.map(a, AddressDTO.class))
+                .orElseThrow(() -> new NotFoundException("Address not found!"));
+    }
+
+    public AddressDTO findAddressByIdNeighbourhoodAndStreet(String id, String neighbourhood, String numberOfStreet) throws NotFoundException {
+        return addressRepository
+                .findByIdAndNeighbourhoodAndStreet(id, neighbourhood, numberOfStreet)
+                .map(a -> modelMapper.map(a, AddressDTO.class))
                 .orElseThrow(() -> new NotFoundException("Address not found!"));
     }
 

@@ -71,4 +71,8 @@ public class ParkingSpaceService implements BaseService<ParkingSpaceDTO> {
     public ParkingSpaceDTO getByName(String name) throws NotFoundException {
         return null;
     }
+
+    public void findAddressByAddressId(String id) {
+
+    }
 }

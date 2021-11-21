@@ -1,9 +1,6 @@
 package com.example.carpark.web;
 
 import com.example.carpark.dto.CarDTO;
-import com.example.carpark.entity.Car;
-import com.example.carpark.entity.UserEntity;
-import com.example.carpark.model.CurrentUser;
 import com.example.carpark.service.impl.CarService;
 import com.example.carpark.service.impl.UserService;
 import javassist.NotFoundException;
@@ -18,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-import java.util.Set;
 
 @Controller
 @RequestMapping("/cars")
@@ -27,7 +23,6 @@ public class CarController {
 
     private final UserService userService;
     private final CarService carService;
-    private final CurrentUser currentUser;
 
     @GetMapping("/add")
     public String showAll(Model model) {

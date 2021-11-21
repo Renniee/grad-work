@@ -12,4 +12,6 @@ import java.util.List;
 public class ParkingSpaceDTO {
     private BigDecimal price;
     private List<Address> addresses;
+    private TicketDTO ticket;
+    private boolean isOccupied;
 }

@@ -1,17 +1,13 @@
 package com.example.carpark.dto;
 
-import com.example.carpark.entity.Car;
-import com.example.carpark.entity.Code;
-import com.example.carpark.entity.ParkingSpace;
-import com.example.carpark.entity.UserEntity;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import java.util.Random;
 
+@Data
+@NoArgsConstructor
 public class TicketDTO {
-    // TODO 1.Get User
-    private ParkingSpace parkingSpace;
-    // TODO 2.Get CAR
-    private Car car;
-    private Code code;
+    private int number = new Random().nextInt(999999);
 }
+

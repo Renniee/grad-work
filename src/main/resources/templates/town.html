@@ -23,31 +23,43 @@
     <div class="sofia">
         <h2 class="heading">All parking spots</h2>
         <div class='row mb-4 d-flex justify-content-around'>
-            <form th:action="@{/ticket/buy}" method="post">
-                <div class="centered">Addresses:
-                    <table>
-                        <tr>
-                            <th>Neighbourhood</th>
-                            <th>Street</th>
-                            <th>Number of Street</th>
-                            <th>Choose address</th>
-                        </tr>
-                        <tr
-                                th:each="address: ${addresses}"
-                                th:object="${address}">
+            <div class="centered">Addresses:
+                <table>
+                    <tr>
+                        <th>Neighbourhood</th>
+                        <th>Street</th>
+                        <th>Number of Street</th>
+                        <th>Choose address</th>
+                    </tr>
+                    <tr th:each="address: ${addresses}" th:object="${address}">
+                        <form th:if="${!address.isOccupied()}" th:action="@{/ticket/buy}" method="post">
+
                             <input type="hidden" th:attr="name='id'" th:value="*{id}"/>
                             <th th:attr="name='neighbourhood'" th:text="*{neighbourhood}"></th>
                             <th th:attr="name='street'" th:text="*{street}"></th>
                             <th th:attr="name='numberOfStreet'" th:text="*{numberOfStreet}"></th>
-                            <th>
-                                <button th:action="@{/ticket/buy/{id}(id = *{id})}"
+                            <th th:if="${!address.isOccupied()}">
+                                <button th:href="@{/ticket/buy}"
                                         style="height:30px; width:120px">Get ticket
                                 </button>
                             </th>
-                        </tr>
-                    </table>
-                </div>
-            </form>
+                        </form>
+                        <form th:if="${address.isOccupied()}" th:action="@{/ticket/buy-error}" method="get">
+
+                            <input type="hidden" th:attr="name='id'" th:value="*{id}"/>
+                            <th th:attr="name='neighbourhood'" th:text="*{neighbourhood}"></th>
+                            <th th:attr="name='street'" th:text="*{street}"></th>
+                            <th th:attr="name='numberOfStreet'" th:text="*{numberOfStreet}"></th>
+                            <th th:if="${address.isOccupied()}">
+                                <button th:href="@{/ticket/buy-error}"
+                                        class="bg-danger">Get ticket
+                                </button>
+                            </th>
+                            </th>
+                        </form>
+                    </tr>
+                </table>
+            </div>
         </div>
     </div>
 </main>
